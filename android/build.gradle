@@ -36,7 +36,7 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    namespace 'om.mapbox.mapboxgl'
+    namespace 'com.mapbox.mapboxgl'
     compileSdkVersion 35
     ndkVersion "20.1.5948944"
 
