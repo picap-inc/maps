@@ -9,22 +9,10 @@ dependencies:
   flutter:
     sdk: flutter
   mapbox_gl_platform_interface:
-    git:
-      url: https://github.com/picap-inc/maps.git
-      path: mapbox_gl_platform_interface
-      ref: android-15
-  mapbox_gl_web:
-    git:
-      url: https://github.com/picap-inc/maps.git
-      path: mapbox_gl_web
-      ref: android-15
-  collection: 1.18.0
-
-dependency_overrides:
-  mapbox_gl_platform_interface:
     path: ./mapbox_gl_platform_interface
   mapbox_gl_web:
     path: ./mapbox_gl_web
+  collection: ^1.15.0
 
 flutter:
   plugin:
@@ -38,5 +26,6 @@ flutter:
         default_package: mapbox_gl_web
 
 environment:
-  sdk: ^3.5.0
-  flutter: ^3.24.3
+  sdk: '>=3.6.0 <4.0.0'
+  # Flutter versions prior to 1.10 did not support the flutter.plugin.platforms map.
+  flutter: ">=3.27.1"

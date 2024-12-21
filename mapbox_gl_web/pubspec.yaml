@@ -3,6 +3,8 @@ description: Web platform implementation of mapbox_gl
 version: 0.16.0
 homepage: https://github.com/picap-inc/maps
 
+publish_to: 'none'
+
 flutter:
   plugin:
     platforms:
@@ -17,21 +19,14 @@ dependencies:
     sdk: flutter
   meta: 1.15.0
   mapbox_gl_platform_interface:
-    git:
-      url: https://github.com/picap-inc/maps.git
-      path: mapbox_gl_platform_interface
-      ref: android-15
+    path: ../mapbox_gl_platform_interface
   mapbox_gl_dart: ^0.2.1
   image: '>=3.0.0 <5.0.0'
-
-dependency_overrides:
-  mapbox_gl_platform_interface:
-    path: ../mapbox_gl_platform_interface
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 environment:
-  sdk: ^3.5.0
-  flutter: ^3.24.3
+  sdk: ">=3.6.0 <4.0.0"
+  flutter: ">=3.27.1"
