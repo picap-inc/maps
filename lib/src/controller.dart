@@ -851,7 +851,7 @@ class MapboxMapController extends ChangeNotifier {
   Future<Line> addLine(LineOptions options, [Map? data]) async {
     final effectiveOptions = LineOptions.defaultOptions.copyWith(options);
     final line = Line(getRandomString(), effectiveOptions, data);
-    await lineManager!.add(line);
+    await lineManager?.add(line);
     notifyListeners();
     return line;
   }
