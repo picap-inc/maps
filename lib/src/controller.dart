@@ -919,8 +919,8 @@ class MapboxMapController extends ChangeNotifier {
   /// platform side.
   ///
   /// The returned [Future] completes once listeners have been notified.
-  Future<void> updateLine(Line? line, LineOptions changes) async {
-    if (line != null) {
+  Future<void> updateLine(Line? line, LineOptions? changes) async {
+    if (line != null && changes != null) {
       line.options = line.options.copyWith(changes);
       await lineManager?.set(line);
       notifyListeners();
