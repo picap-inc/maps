@@ -204,37 +204,53 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
   @override
   Future<CameraPosition?> updateMapOptions(
       Map<String, dynamic> optionsUpdate) async {
-    final dynamic json = await _channel.invokeMethod(
-      'map#update',
-      <String, dynamic>{
-        'options': optionsUpdate,
-      },
-    );
-    return CameraPosition.fromMap(json);
+    try {
+      final dynamic json = await _channel.invokeMethod(
+        'map#update',
+        <String, dynamic>{
+          'options': optionsUpdate,
+        },
+      );
+      return CameraPosition.fromMap(json);
+    } on PlatformException catch (e) {
+      return null;
+    }
   }
 
   @override
   Future<bool?> animateCamera(cameraUpdate, {Duration? duration}) async {
-    return await _channel.invokeMethod('camera#animate', <String, dynamic>{
-      'cameraUpdate': cameraUpdate.toJson(),
-      'duration': duration?.inMilliseconds,
-    });
+    try {
+      return await _channel.invokeMethod('camera#animate', <String, dynamic>{
+        'cameraUpdate': cameraUpdate.toJson(),
+        'duration': duration?.inMilliseconds,
+      });
+    } on PlatformException catch (e) {
+      return false;
+    }
   }
 
   @override
   Future<bool?> moveCamera(CameraUpdate cameraUpdate) async {
-    return await _channel.invokeMethod('camera#move', <String, dynamic>{
-      'cameraUpdate': cameraUpdate.toJson(),
-    });
+    try {
+      return await _channel.invokeMethod('camera#move', <String, dynamic>{
+        'cameraUpdate': cameraUpdate.toJson(),
+      });
+    } on PlatformException catch (e) {
+      return false;
+    }
   }
 
   @override
   Future<void> updateMyLocationTrackingMode(
       MyLocationTrackingMode myLocationTrackingMode) async {
-    await _channel
-        .invokeMethod('map#updateMyLocationTrackingMode', <String, dynamic>{
-      'mode': myLocationTrackingMode.index,
-    });
+    try {
+      await _channel
+          .invokeMethod('map#updateMyLocationTrackingMode', <String, dynamic>{
+        'mode': myLocationTrackingMode.index,
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
@@ -244,15 +260,19 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
 
   @override
   Future<void> updateContentInsets(EdgeInsets insets, bool animated) async {
-    await _channel.invokeMethod('map#updateContentInsets', <String, dynamic>{
-      'bounds': <String, double>{
-        'top': insets.top,
-        'left': insets.left,
-        'bottom': insets.bottom,
-        'right': insets.right,
-      },
-      'animated': animated,
-    });
+    try {
+      await _channel.invokeMethod('map#updateContentInsets', <String, dynamic>{
+        'bounds': <String, double>{
+          'top': insets.top,
+          'left': insets.left,
+          'bottom': insets.bottom,
+          'right': insets.right,
+        },
+        'animated': animated,
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
@@ -549,19 +569,27 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
   @override
   Future<void> addGeoJsonSource(String sourceId, Map<String, dynamic> geojson,
       {String? promoteId}) async {
-    await _channel.invokeMethod('source#addGeoJson', <String, dynamic>{
-      'sourceId': sourceId,
-      'geojson': jsonEncode(geojson),
-    });
+    try {
+      await _channel.invokeMethod('source#addGeoJson', <String, dynamic>{
+        'sourceId': sourceId,
+        'geojson': jsonEncode(geojson),
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
   Future<void> setGeoJsonSource(
       String sourceId, Map<String, dynamic> geojson) async {
-    await _channel.invokeMethod('source#setGeoJson', <String, dynamic>{
-      'sourceId': sourceId,
-      'geojson': jsonEncode(geojson),
-    });
+    try {
+      await _channel.invokeMethod('source#setGeoJson', <String, dynamic>{
+        'sourceId': sourceId,
+        'geojson': jsonEncode(geojson),
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
@@ -573,50 +601,67 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       double? maxzoom,
       dynamic filter,
       required bool enableInteraction}) async {
-    await _channel.invokeMethod('symbolLayer#add', <String, dynamic>{
-      'sourceId': sourceId,
-      'layerId': layerId,
-      'belowLayerId': belowLayerId,
-      'sourceLayer': sourceLayer,
-      'minzoom': minzoom,
-      'maxzoom': maxzoom,
-      'filter': jsonEncode(filter),
-      'enableInteraction': enableInteraction,
-      'properties': properties
-          .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
-    });
+    try {
+      await _channel.invokeMethod('symbolLayer#add', <String, dynamic>{
+        'sourceId': sourceId,
+        'layerId': layerId,
+        'belowLayerId': belowLayerId,
+        'sourceLayer': sourceLayer,
+        'minzoom': minzoom,
+        'maxzoom': maxzoom,
+        'filter': jsonEncode(filter),
+        'enableInteraction': enableInteraction,
+        'properties': properties.map(
+            (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
   Future<void> setLineLayerProperties(
       String layerId, Map<String, dynamic> properties) async {
-    await _channel.invokeMapMethod('lineLayer#setProperties', <String, dynamic>{
-      'layerId': layerId,
-      'properties': properties
-          .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
-    });
+    try {
+      await _channel
+          .invokeMapMethod('lineLayer#setProperties', <String, dynamic>{
+        'layerId': layerId,
+        'properties': properties.map(
+            (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
   Future<void> setSymbolLayerProperties(
       String layerId, Map<String, dynamic> properties) async {
-    await _channel
-        .invokeMapMethod('symbolLayer#setProperties', <String, dynamic>{
-      'layerId': layerId,
-      'properties': properties
-          .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
-    });
+    try {
+      await _channel
+          .invokeMapMethod('symbolLayer#setProperties', <String, dynamic>{
+        'layerId': layerId,
+        'properties': properties.map(
+            (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
   Future<void> setCircleLayerProperties(
       String layerId, Map<String, dynamic> properties) async {
-    await _channel
-        .invokeMapMethod('circleLayer#setProperties', <String, dynamic>{
-      'layerId': layerId,
-      'properties': properties
-          .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
-    });
+    try {
+      await _channel
+          .invokeMapMethod('circleLayer#setProperties', <String, dynamic>{
+        'layerId': layerId,
+        'properties': properties.map(
+            (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
@@ -628,18 +673,22 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       double? maxzoom,
       dynamic filter,
       required bool enableInteraction}) async {
-    await _channel.invokeMethod('lineLayer#add', <String, dynamic>{
-      'sourceId': sourceId,
-      'layerId': layerId,
-      'belowLayerId': belowLayerId,
-      'sourceLayer': sourceLayer,
-      'minzoom': minzoom,
-      'maxzoom': maxzoom,
-      'filter': jsonEncode(filter),
-      'enableInteraction': enableInteraction,
-      'properties': properties
-          .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
-    });
+    try {
+      await _channel.invokeMethod('lineLayer#add', <String, dynamic>{
+        'sourceId': sourceId,
+        'layerId': layerId,
+        'belowLayerId': belowLayerId,
+        'sourceLayer': sourceLayer,
+        'minzoom': minzoom,
+        'maxzoom': maxzoom,
+        'filter': jsonEncode(filter),
+        'enableInteraction': enableInteraction,
+        'properties': properties.map(
+            (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
@@ -651,18 +700,22 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       double? maxzoom,
       dynamic filter,
       required bool enableInteraction}) async {
-    await _channel.invokeMethod('circleLayer#add', <String, dynamic>{
-      'sourceId': sourceId,
-      'layerId': layerId,
-      'belowLayerId': belowLayerId,
-      'sourceLayer': sourceLayer,
-      'minzoom': minzoom,
-      'maxzoom': maxzoom,
-      'filter': jsonEncode(filter),
-      'enableInteraction': enableInteraction,
-      'properties': properties
-          .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
-    });
+    try {
+      await _channel.invokeMethod('circleLayer#add', <String, dynamic>{
+        'sourceId': sourceId,
+        'layerId': layerId,
+        'belowLayerId': belowLayerId,
+        'sourceLayer': sourceLayer,
+        'minzoom': minzoom,
+        'maxzoom': maxzoom,
+        'filter': jsonEncode(filter),
+        'enableInteraction': enableInteraction,
+        'properties': properties.map(
+            (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
@@ -674,18 +727,22 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       double? maxzoom,
       dynamic filter,
       required bool enableInteraction}) async {
-    await _channel.invokeMethod('fillLayer#add', <String, dynamic>{
-      'sourceId': sourceId,
-      'layerId': layerId,
-      'belowLayerId': belowLayerId,
-      'sourceLayer': sourceLayer,
-      'minzoom': minzoom,
-      'maxzoom': maxzoom,
-      'filter': jsonEncode(filter),
-      'enableInteraction': enableInteraction,
-      'properties': properties
-          .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
-    });
+    try {
+      await _channel.invokeMethod('fillLayer#add', <String, dynamic>{
+        'sourceId': sourceId,
+        'layerId': layerId,
+        'belowLayerId': belowLayerId,
+        'sourceLayer': sourceLayer,
+        'minzoom': minzoom,
+        'maxzoom': maxzoom,
+        'filter': jsonEncode(filter),
+        'enableInteraction': enableInteraction,
+        'properties': properties.map(
+            (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
@@ -697,18 +754,22 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       double? maxzoom,
       dynamic filter,
       required bool enableInteraction}) async {
-    await _channel.invokeMethod('fillExtrusionLayer#add', <String, dynamic>{
-      'sourceId': sourceId,
-      'layerId': layerId,
-      'belowLayerId': belowLayerId,
-      'sourceLayer': sourceLayer,
-      'minzoom': minzoom,
-      'maxzoom': maxzoom,
-      'filter': jsonEncode(filter),
-      'enableInteraction': enableInteraction,
-      'properties': properties
-          .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
-    });
+    try {
+      await _channel.invokeMethod('fillExtrusionLayer#add', <String, dynamic>{
+        'sourceId': sourceId,
+        'layerId': layerId,
+        'belowLayerId': belowLayerId,
+        'sourceLayer': sourceLayer,
+        'minzoom': minzoom,
+        'maxzoom': maxzoom,
+        'filter': jsonEncode(filter),
+        'enableInteraction': enableInteraction,
+        'properties': properties.map(
+            (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
@@ -719,10 +780,14 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
 
   @override
   Future<void> addSource(String sourceId, SourceProperties properties) async {
-    await _channel.invokeMethod('style#addSource', <String, dynamic>{
-      'sourceId': sourceId,
-      'properties': properties.toJson(),
-    });
+    try {
+      await _channel.invokeMethod('style#addSource', <String, dynamic>{
+        'sourceId': sourceId,
+        'properties': properties.toJson(),
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
@@ -732,15 +797,19 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       String? sourceLayer,
       double? minzoom,
       double? maxzoom}) async {
-    await _channel.invokeMethod('rasterLayer#add', <String, dynamic>{
-      'sourceId': sourceId,
-      'layerId': layerId,
-      'belowLayerId': belowLayerId,
-      'minzoom': minzoom,
-      'maxzoom': maxzoom,
-      'properties': properties
-          .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
-    });
+    try {
+      await _channel.invokeMethod('rasterLayer#add', <String, dynamic>{
+        'sourceId': sourceId,
+        'layerId': layerId,
+        'belowLayerId': belowLayerId,
+        'minzoom': minzoom,
+        'maxzoom': maxzoom,
+        'properties': properties.map(
+            (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
@@ -750,15 +819,19 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       String? sourceLayer,
       double? minzoom,
       double? maxzoom}) async {
-    await _channel.invokeMethod('hillshadeLayer#add', <String, dynamic>{
-      'sourceId': sourceId,
-      'layerId': layerId,
-      'belowLayerId': belowLayerId,
-      'minzoom': minzoom,
-      'maxzoom': maxzoom,
-      'properties': properties
-          .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
-    });
+    try {
+      await _channel.invokeMethod('hillshadeLayer#add', <String, dynamic>{
+        'sourceId': sourceId,
+        'layerId': layerId,
+        'belowLayerId': belowLayerId,
+        'minzoom': minzoom,
+        'maxzoom': maxzoom,
+        'properties': properties.map(
+            (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override
@@ -768,23 +841,31 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       String? sourceLayer,
       double? minzoom,
       double? maxzoom}) async {
-    await _channel.invokeMethod('heatmapLayer#add', <String, dynamic>{
-      'sourceId': sourceId,
-      'layerId': layerId,
-      'belowLayerId': belowLayerId,
-      'minzoom': minzoom,
-      'maxzoom': maxzoom,
-      'properties': properties
-          .map((key, value) => MapEntry<String, String>(key, jsonEncode(value)))
-    });
+    try {
+      await _channel.invokeMethod('heatmapLayer#add', <String, dynamic>{
+        'sourceId': sourceId,
+        'layerId': layerId,
+        'belowLayerId': belowLayerId,
+        'minzoom': minzoom,
+        'maxzoom': maxzoom,
+        'properties': properties.map(
+            (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   Future<void> setFeatureForGeoJsonSource(
       String sourceId, Map<String, dynamic> geojsonFeature) async {
-    await _channel.invokeMethod('source#setFeature', <String, dynamic>{
-      'sourceId': sourceId,
-      'geojsonFeature': jsonEncode(geojsonFeature)
-    });
+    try {
+      await _channel.invokeMethod('source#setFeature', <String, dynamic>{
+        'sourceId': sourceId,
+        'geojsonFeature': jsonEncode(geojsonFeature)
+      });
+    } on PlatformException catch (e) {
+      return new Future.error(e);
+    }
   }
 
   @override

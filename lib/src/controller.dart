@@ -173,6 +173,7 @@ class MapboxMapController extends ChangeNotifier {
       onUserLocationUpdated?.call(location);
     });
   }
+
   bool _disposed = false;
 
   FillManager? fillManager;
@@ -294,8 +295,12 @@ class MapboxMapController extends ChangeNotifier {
   /// Note: this currently always returns immediately with a value of null on iOS
   Future<bool?> animateCamera(CameraUpdate cameraUpdate,
       {Duration? duration}) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.animateCamera(cameraUpdate, duration: duration);
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.animateCamera(cameraUpdate, duration: duration);
+    } catch (e) {
+      return false;
+    }
   }
 
   /// Instantaneously re-position the camera.
@@ -306,8 +311,12 @@ class MapboxMapController extends ChangeNotifier {
   /// It returns true if the camera was successfully moved and false if the movement was canceled.
   /// Note: this currently always returns immediately with a value of null on iOS
   Future<bool?> moveCamera(CameraUpdate cameraUpdate) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.moveCamera(cameraUpdate);
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.moveCamera(cameraUpdate);
+    } catch (e) {
+      return false;
+    }
   }
 
   /// Adds a new geojson source
@@ -324,9 +333,11 @@ class MapboxMapController extends ChangeNotifier {
   ///
   Future<void> addGeoJsonSource(String sourceId, Map<String, dynamic> geojson,
       {String? promoteId}) async {
-    _disposeGuard();
-    await _mapboxGlPlatform.addGeoJsonSource(sourceId, geojson,
-        promoteId: promoteId);
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.addGeoJsonSource(sourceId, geojson,
+          promoteId: promoteId);
+    } catch (e) {}
   }
 
   /// Sets new geojson data to and existing source
@@ -342,8 +353,10 @@ class MapboxMapController extends ChangeNotifier {
   /// platform side.
   Future<void> setGeoJsonSource(
       String sourceId, Map<String, dynamic> geojson) async {
-    _disposeGuard();
-    await _mapboxGlPlatform.setGeoJsonSource(sourceId, geojson);
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.setGeoJsonSource(sourceId, geojson);
+    } catch (e) {}
   }
 
   /// Sets new geojson data to and existing source
@@ -359,9 +372,11 @@ class MapboxMapController extends ChangeNotifier {
   /// platform side.
   Future<void> setGeoJsonFeature(
       String sourceId, Map<String, dynamic> geojsonFeature) async {
-    _disposeGuard();
-    await _mapboxGlPlatform.setFeatureForGeoJsonSource(
-        sourceId, geojsonFeature);
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.setFeatureForGeoJsonSource(
+          sourceId, geojsonFeature);
+    } catch (e) {}
   }
 
   /// Add a symbol layer to the map with the given properties
@@ -391,18 +406,20 @@ class MapboxMapController extends ChangeNotifier {
       double? maxzoom,
       dynamic filter,
       bool enableInteraction = true}) async {
-    _disposeGuard();
-    await _mapboxGlPlatform.addSymbolLayer(
-      sourceId,
-      layerId,
-      properties.toJson(),
-      belowLayerId: belowLayerId,
-      sourceLayer: sourceLayer,
-      minzoom: minzoom,
-      maxzoom: maxzoom,
-      filter: filter,
-      enableInteraction: enableInteraction,
-    );
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.addSymbolLayer(
+        sourceId,
+        layerId,
+        properties.toJson(),
+        belowLayerId: belowLayerId,
+        sourceLayer: sourceLayer,
+        minzoom: minzoom,
+        maxzoom: maxzoom,
+        filter: filter,
+        enableInteraction: enableInteraction,
+      );
+    } catch (e) {}
   }
 
   Future<void> setLineLayerProperties(
@@ -450,18 +467,20 @@ class MapboxMapController extends ChangeNotifier {
       double? maxzoom,
       dynamic filter,
       bool enableInteraction = true}) async {
-    _disposeGuard();
-    await _mapboxGlPlatform.addLineLayer(
-      sourceId,
-      layerId,
-      properties.toJson(),
-      belowLayerId: belowLayerId,
-      sourceLayer: sourceLayer,
-      minzoom: minzoom,
-      maxzoom: maxzoom,
-      filter: filter,
-      enableInteraction: enableInteraction,
-    );
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.addLineLayer(
+        sourceId,
+        layerId,
+        properties.toJson(),
+        belowLayerId: belowLayerId,
+        sourceLayer: sourceLayer,
+        minzoom: minzoom,
+        maxzoom: maxzoom,
+        filter: filter,
+        enableInteraction: enableInteraction,
+      );
+    } catch (e) {}
   }
 
   /// Add a fill layer to the map with the given properties
@@ -491,18 +510,20 @@ class MapboxMapController extends ChangeNotifier {
       double? maxzoom,
       dynamic filter,
       bool enableInteraction = true}) async {
-    _disposeGuard();
-    await _mapboxGlPlatform.addFillLayer(
-      sourceId,
-      layerId,
-      properties.toJson(),
-      belowLayerId: belowLayerId,
-      sourceLayer: sourceLayer,
-      minzoom: minzoom,
-      maxzoom: maxzoom,
-      filter: filter,
-      enableInteraction: enableInteraction,
-    );
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.addFillLayer(
+        sourceId,
+        layerId,
+        properties.toJson(),
+        belowLayerId: belowLayerId,
+        sourceLayer: sourceLayer,
+        minzoom: minzoom,
+        maxzoom: maxzoom,
+        filter: filter,
+        enableInteraction: enableInteraction,
+      );
+    } catch (e) {}
   }
 
   /// Add a fill extrusion layer to the map with the given properties
@@ -532,18 +553,20 @@ class MapboxMapController extends ChangeNotifier {
       double? maxzoom,
       dynamic filter,
       bool enableInteraction = true}) async {
-    _disposeGuard();
-    await _mapboxGlPlatform.addFillExtrusionLayer(
-      sourceId,
-      layerId,
-      properties.toJson(),
-      belowLayerId: belowLayerId,
-      sourceLayer: sourceLayer,
-      minzoom: minzoom,
-      maxzoom: maxzoom,
-      filter: filter,
-      enableInteraction: enableInteraction,
-    );
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.addFillExtrusionLayer(
+        sourceId,
+        layerId,
+        properties.toJson(),
+        belowLayerId: belowLayerId,
+        sourceLayer: sourceLayer,
+        minzoom: minzoom,
+        maxzoom: maxzoom,
+        filter: filter,
+        enableInteraction: enableInteraction,
+      );
+    } catch (e) {}
   }
 
   /// Add a circle layer to the map with the given properties
@@ -573,18 +596,20 @@ class MapboxMapController extends ChangeNotifier {
       double? maxzoom,
       dynamic filter,
       bool enableInteraction = true}) async {
-    _disposeGuard();
-    await _mapboxGlPlatform.addCircleLayer(
-      sourceId,
-      layerId,
-      properties.toJson(),
-      belowLayerId: belowLayerId,
-      sourceLayer: sourceLayer,
-      minzoom: minzoom,
-      maxzoom: maxzoom,
-      filter: filter,
-      enableInteraction: enableInteraction,
-    );
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.addCircleLayer(
+        sourceId,
+        layerId,
+        properties.toJson(),
+        belowLayerId: belowLayerId,
+        sourceLayer: sourceLayer,
+        minzoom: minzoom,
+        maxzoom: maxzoom,
+        filter: filter,
+        enableInteraction: enableInteraction,
+      );
+    } catch (e) {}
   }
 
   /// Add a raster layer to the map with the given properties
@@ -607,16 +632,18 @@ class MapboxMapController extends ChangeNotifier {
       String? sourceLayer,
       double? minzoom,
       double? maxzoom}) async {
-    _disposeGuard();
-    await _mapboxGlPlatform.addRasterLayer(
-      sourceId,
-      layerId,
-      properties.toJson(),
-      belowLayerId: belowLayerId,
-      sourceLayer: sourceLayer,
-      minzoom: minzoom,
-      maxzoom: maxzoom,
-    );
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.addRasterLayer(
+        sourceId,
+        layerId,
+        properties.toJson(),
+        belowLayerId: belowLayerId,
+        sourceLayer: sourceLayer,
+        minzoom: minzoom,
+        maxzoom: maxzoom,
+      );
+    } catch (e) {}
   }
 
   /// Add a hillshade layer to the map with the given properties
@@ -639,16 +666,18 @@ class MapboxMapController extends ChangeNotifier {
       String? sourceLayer,
       double? minzoom,
       double? maxzoom}) async {
-    _disposeGuard();
-    await _mapboxGlPlatform.addHillshadeLayer(
-      sourceId,
-      layerId,
-      properties.toJson(),
-      belowLayerId: belowLayerId,
-      sourceLayer: sourceLayer,
-      minzoom: minzoom,
-      maxzoom: maxzoom,
-    );
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.addHillshadeLayer(
+        sourceId,
+        layerId,
+        properties.toJson(),
+        belowLayerId: belowLayerId,
+        sourceLayer: sourceLayer,
+        minzoom: minzoom,
+        maxzoom: maxzoom,
+      );
+    } catch (e) {}
   }
 
   /// Add a heatmap layer to the map with the given properties
@@ -671,16 +700,18 @@ class MapboxMapController extends ChangeNotifier {
       String? sourceLayer,
       double? minzoom,
       double? maxzoom}) async {
-    _disposeGuard();
-    await _mapboxGlPlatform.addHeatmapLayer(
-      sourceId,
-      layerId,
-      properties.toJson(),
-      belowLayerId: belowLayerId,
-      sourceLayer: sourceLayer,
-      minzoom: minzoom,
-      maxzoom: maxzoom,
-    );
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.addHeatmapLayer(
+        sourceId,
+        layerId,
+        properties.toJson(),
+        belowLayerId: belowLayerId,
+        sourceLayer: sourceLayer,
+        minzoom: minzoom,
+        maxzoom: maxzoom,
+      );
+    } catch (e) {}
   }
 
   /// Updates user location tracking mode.
@@ -689,9 +720,10 @@ class MapboxMapController extends ChangeNotifier {
   /// platform side.
   Future<void> updateMyLocationTrackingMode(
       MyLocationTrackingMode myLocationTrackingMode) async {
-    _disposeGuard();
-    return _mapboxGlPlatform
-        .updateMyLocationTrackingMode(myLocationTrackingMode);
+    try {
+      _disposeGuard();
+      _mapboxGlPlatform.updateMyLocationTrackingMode(myLocationTrackingMode);
+    } catch (e) {}
   }
 
   /// Updates the language of the map labels to match the device's language.
@@ -699,8 +731,10 @@ class MapboxMapController extends ChangeNotifier {
   /// The returned [Future] completes after the change has been made on the
   /// platform side.
   Future<void> matchMapLanguageWithDeviceDefault() async {
-    _disposeGuard();
-    return _mapboxGlPlatform.matchMapLanguageWithDeviceDefault();
+    try {
+      _disposeGuard();
+      _mapboxGlPlatform.matchMapLanguageWithDeviceDefault();
+    } catch (e) {}
   }
 
   /// Updates the distance from the edges of the map view’s frame to the edges
@@ -716,8 +750,10 @@ class MapboxMapController extends ChangeNotifier {
   /// platform side.
   Future<void> updateContentInsets(EdgeInsets insets,
       [bool animated = false]) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.updateContentInsets(insets, animated);
+    try {
+      _disposeGuard();
+      _mapboxGlPlatform.updateContentInsets(insets, animated);
+    } catch (e) {}
   }
 
   /// Updates the language of the map labels to match the specified language.
@@ -1182,9 +1218,12 @@ class MapboxMapController extends ChangeNotifier {
   ///  );
   /// }
   /// ```
-  Future<void> addImage(String name, Uint8List bytes, [bool sdf = false]) {
-    _disposeGuard();
-    return _mapboxGlPlatform.addImage(name, bytes, sdf);
+  Future<void> addImage(String name, Uint8List bytes,
+      [bool sdf = false]) async {
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.addImage(name, bytes, sdf);
+    } catch (e) {}
   }
 
   /// For more information on what this does, see https://docs.mapbox.com/help/troubleshooting/optimize-map-label-placement/#label-collision
@@ -1209,67 +1248,85 @@ class MapboxMapController extends ChangeNotifier {
 
   /// Adds an image source to the style currently displayed in the map, so that it can later be referred to by the provided id.
   Future<void> addImageSource(
-      String imageSourceId, Uint8List bytes, LatLngQuad coordinates) {
-    _disposeGuard();
-    return _mapboxGlPlatform.addImageSource(imageSourceId, bytes, coordinates);
+      String imageSourceId, Uint8List bytes, LatLngQuad coordinates) async {
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.addImageSource(imageSourceId, bytes, coordinates);
+    } catch (e) {}
   }
 
   /// Update an image source to the style currently displayed in the map, so that it can later be referred to by the provided id.
   Future<void> updateImageSource(
-      String imageSourceId, Uint8List? bytes, LatLngQuad? coordinates) {
-    _disposeGuard();
-    return _mapboxGlPlatform.updateImageSource(
-        imageSourceId, bytes, coordinates);
+      String imageSourceId, Uint8List? bytes, LatLngQuad? coordinates) async {
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.updateImageSource(
+          imageSourceId, bytes, coordinates);
+    } catch (e) {}
   }
 
   /// Removes previously added image source by id
   @Deprecated("This method was renamed to removeSource")
-  Future<void> removeImageSource(String imageSourceId) {
-    _disposeGuard();
-    return _mapboxGlPlatform.removeSource(imageSourceId);
+  Future<void> removeImageSource(String imageSourceId) async {
+    try {
+      _disposeGuard();
+      _mapboxGlPlatform.removeSource(imageSourceId);
+    } catch (e) {}
   }
 
   /// Removes previously added source by id
-  Future<void> removeSource(String sourceId) {
-    _disposeGuard();
-    return _mapboxGlPlatform.removeSource(sourceId);
+  Future<void> removeSource(String sourceId) async {
+    try {
+      _disposeGuard();
+      _mapboxGlPlatform.removeSource(sourceId);
+    } catch (e) {}
   }
 
   /// Adds a Mapbox image layer to the map's style at render time.
   Future<void> addImageLayer(String layerId, String imageSourceId,
-      {double? minzoom, double? maxzoom}) {
-    _disposeGuard();
-    return _mapboxGlPlatform.addLayer(layerId, imageSourceId, minzoom, maxzoom);
+      {double? minzoom, double? maxzoom}) async {
+    try {
+      _disposeGuard();
+      _mapboxGlPlatform.addLayer(layerId, imageSourceId, minzoom, maxzoom);
+    } catch (e) {}
   }
 
   /// Adds a Mapbox image layer below the layer provided with belowLayerId to the map's style at render time.
   Future<void> addImageLayerBelow(
       String layerId, String sourceId, String imageSourceId,
-      {double? minzoom, double? maxzoom}) {
-    _disposeGuard();
-    return _mapboxGlPlatform.addLayerBelow(
-        layerId, sourceId, imageSourceId, minzoom, maxzoom);
+      {double? minzoom, double? maxzoom}) async {
+    try {
+      _disposeGuard();
+      _mapboxGlPlatform.addLayerBelow(
+          layerId, sourceId, imageSourceId, minzoom, maxzoom);
+    } catch (e) {}
   }
 
   /// Adds a Mapbox image layer below the layer provided with belowLayerId to the map's style at render time. Only works for image sources!
   @Deprecated("This method was renamed to addImageLayerBelow for clarity.")
   Future<void> addLayerBelow(
       String layerId, String sourceId, String imageSourceId,
-      {double? minzoom, double? maxzoom}) {
-    _disposeGuard();
-    return _mapboxGlPlatform.addLayerBelow(
-        layerId, sourceId, imageSourceId, minzoom, maxzoom);
+      {double? minzoom, double? maxzoom}) async {
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.addLayerBelow(
+          layerId, sourceId, imageSourceId, minzoom, maxzoom);
+    } catch (e) {}
   }
 
   /// Removes a Mapbox style layer
-  Future<void> removeLayer(String layerId) {
-    _disposeGuard();
-    return _mapboxGlPlatform.removeLayer(layerId);
+  Future<void> removeLayer(String layerId) async {
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.removeLayer(layerId);
+    } catch (e) {}
   }
 
-  Future<void> setFilter(String layerId, dynamic filter) {
-    _disposeGuard();
-    return _mapboxGlPlatform.setFilter(layerId, filter);
+  Future<void> setFilter(String layerId, dynamic filter) async {
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.setFilter(layerId, filter);
+    } catch (e) {}
   }
 
   /// Sets the visibility by specifying [isVisible] of the layer with
@@ -1310,8 +1367,10 @@ class MapboxMapController extends ChangeNotifier {
 
   /// Add a new source to the map
   Future<void> addSource(String sourceid, SourceProperties properties) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.addSource(sourceid, properties);
+    try {
+      _disposeGuard();
+      await _mapboxGlPlatform.addSource(sourceid, properties);
+    } catch (e) {}
   }
 
   /// Add a layer to the map with the given properties
