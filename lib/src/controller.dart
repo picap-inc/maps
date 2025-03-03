@@ -225,7 +225,7 @@ class MapboxMapController extends ChangeNotifier {
   /// The current set of lines on this map.
   ///
   /// The returned set will be a detached snapshot of the lines collection.
-  Set<Line> get lines => lineManager!.annotations;
+  Set<Line>? get lines => lineManager?.annotations;
 
   /// The current set of circles on this map.
   ///
@@ -906,7 +906,7 @@ class MapboxMapController extends ChangeNotifier {
         Line(getRandomString(), LineOptions.defaultOptions.copyWith(options[i]),
             data?[i])
     ];
-    await lineManager!.addAll(lines);
+    await lineManager?.addAll(lines);
 
     notifyListeners();
     return lines;
@@ -919,10 +919,12 @@ class MapboxMapController extends ChangeNotifier {
   /// platform side.
   ///
   /// The returned [Future] completes once listeners have been notified.
-  Future<void> updateLine(Line line, LineOptions changes) async {
-    line.options = line.options.copyWith(changes);
-    await lineManager!.set(line);
-    notifyListeners();
+  Future<void> updateLine(Line? line, LineOptions changes) async {
+    if (line != null) {
+      line.options = line.options.copyWith(changes);
+      await lineManager?.set(line);
+      notifyListeners();
+    }
   }
 
   /// Retrieves the current position of the line.
@@ -940,7 +942,7 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> removeLine(Line line) async {
-    await lineManager!.remove(line);
+    await lineManager?.remove(line);
     notifyListeners();
   }
 
@@ -952,7 +954,7 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> removeLines(Iterable<Line> lines) async {
-    await lineManager!.removeAll(lines);
+    await lineManager?.removeAll(lines);
     notifyListeners();
   }
 
@@ -963,7 +965,7 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> clearLines() async {
-    await lineManager!.clear();
+    await lineManager?.clear();
     notifyListeners();
   }
 
