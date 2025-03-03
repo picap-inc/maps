@@ -1012,11 +1012,14 @@ class MapboxMapController extends ChangeNotifier {
   /// platform side.
   ///
   /// The returned [Future] completes once listeners have been notified.
-  Future<void> updateCircle(Circle circle, CircleOptions changes) async {
-    circle.options = circle.options.copyWith(changes);
-    await circleManager?.set(circle);
-
-    notifyListeners();
+  Future<void> updateCircle(Circle? circle, CircleOptions? changes) async {
+    try {
+      if (circle != null && changes != null) {
+        circle.options = circle.options.copyWith(changes);
+        await circleManager?.set(circle);
+        notifyListeners();
+      }
+    } catch(e) {}
   }
 
   /// Retrieves the current position of the circle.
@@ -1034,9 +1037,12 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> removeCircle(Circle circle) async {
-    circleManager!.remove(circle);
+    try {
+      circleManager?.remove(circle);
+      notifyListeners();
+    } catch (e) {
 
-    notifyListeners();
+    }
   }
 
   /// Removes the specified [circles] from the map. The circles must be current
@@ -1047,8 +1053,10 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> removeCircles(Iterable<Circle> circles) async {
-    await circleManager!.removeAll(circles);
-    notifyListeners();
+    try {
+      await circleManager?.removeAll(circles);
+      notifyListeners();
+    } catch(e) {}
   }
 
   /// Removes all [circles] from the map.
@@ -1058,9 +1066,10 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> clearCircles() async {
-    circleManager!.clear();
-
-    notifyListeners();
+    try {
+      circleManager?.clear();
+      notifyListeners();
+    } catch(e) {}
   }
 
   /// Adds a fill to the map, configured using the specified custom [options].
@@ -1074,7 +1083,7 @@ class MapboxMapController extends ChangeNotifier {
     final FillOptions effectiveOptions =
         FillOptions.defaultOptions.copyWith(options);
     final fill = Fill(getRandomString(), effectiveOptions, data);
-    await fillManager!.add(fill);
+    await fillManager?.add(fill);
     notifyListeners();
     return fill;
   }
@@ -1094,7 +1103,7 @@ class MapboxMapController extends ChangeNotifier {
         Fill(getRandomString(), FillOptions.defaultOptions.copyWith(options[i]),
             data?[i])
     ];
-    await fillManager!.addAll(fills);
+    await fillManager?.addAll(fills);
 
     notifyListeners();
     return fills;
@@ -1107,11 +1116,14 @@ class MapboxMapController extends ChangeNotifier {
   /// platform side.
   ///
   /// The returned [Future] completes once listeners have been notified.
-  Future<void> updateFill(Fill fill, FillOptions changes) async {
-    fill.options = fill.options.copyWith(changes);
-    await fillManager!.set(fill);
-
-    notifyListeners();
+  Future<void> updateFill(Fill? fill, FillOptions? changes) async {
+    try {
+      if (fill != null && changes != null) {
+        fill.options = fill.options.copyWith(changes);
+        await fillManager?.set(fill);
+        notifyListeners();
+      }
+    } catch(e) {}
   }
 
   /// Removes all [fill] from the map.
@@ -1121,9 +1133,10 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> clearFills() async {
-    await fillManager!.clear();
-
-    notifyListeners();
+    try {
+      await fillManager?.clear();
+      notifyListeners();
+    } catch(e) {}
   }
 
   /// Removes the specified [fill] from the map. The fill must be a current
@@ -1134,8 +1147,10 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> removeFill(Fill fill) async {
-    await fillManager!.remove(fill);
-    notifyListeners();
+    try {
+      await fillManager?.remove(fill);
+      notifyListeners();
+    } catch(e) {}
   }
 
   /// Removes the specified [fills] from the map. The fills must be current
@@ -1146,8 +1161,10 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> removeFills(Iterable<Fill> fills) async {
-    await fillManager!.removeAll(fills);
-    notifyListeners();
+    try {
+      await fillManager?.removeAll(fills);
+      notifyListeners();
+    } catch(e) {}
   }
 
   /// Query rendered features at a point in screen cooridnates
