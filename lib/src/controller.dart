@@ -829,7 +829,8 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> updateSymbol(Symbol symbol, SymbolOptions changes) async {
-    await symbolManager?.set(symbol..options = symbol.options.copyWith(changes));
+    await symbolManager
+        ?.set(symbol..options = symbol.options.copyWith(changes));
 
     notifyListeners();
   }
@@ -883,12 +884,19 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes with the added line once listeners have
   /// been notified.
-  Future<Line> addLine(LineOptions options, [Map? data]) async {
-    final effectiveOptions = LineOptions.defaultOptions.copyWith(options);
-    final line = Line(getRandomString(), effectiveOptions, data);
-    await lineManager?.add(line);
-    notifyListeners();
-    return line;
+  Future<Line?> addLine(LineOptions? options, [Map? data]) async {
+    try {
+      if (options != null) {
+        final effectiveOptions = LineOptions.defaultOptions.copyWith(options);
+        final line = Line(getRandomString(), effectiveOptions, data);
+        await lineManager?.add(line);
+        notifyListeners();
+        return line;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Adds multiple lines to the map, configured using the specified custom [options].
@@ -898,17 +906,24 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes with the added line once listeners have
   /// been notified.
-  Future<List<Line>> addLines(List<LineOptions> options,
+  Future<List<Line>?> addLines(List<LineOptions>? options,
       [List<Map>? data]) async {
-    final lines = [
-      for (var i = 0; i < options.length; i++)
-        Line(getRandomString(), LineOptions.defaultOptions.copyWith(options[i]),
-            data?[i])
-    ];
-    await lineManager?.addAll(lines);
-
-    notifyListeners();
-    return lines;
+    try {
+      if (options != null && options.isNotEmpty) {
+        final lines = [
+          for (var i = 0; i < options.length; i++)
+            Line(getRandomString(),
+                LineOptions.defaultOptions.copyWith(options[i]), data?[i])
+        ];
+        await lineManager?.addAll(lines);
+        notifyListeners();
+        return lines;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Updates the specified [line] with the given [changes]. The line must
@@ -919,18 +934,20 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> updateLine(Line? line, LineOptions? changes) async {
-    if (line != null && changes != null) {
-      line.options = line.options.copyWith(changes);
-      await lineManager?.set(line);
-      notifyListeners();
-    }
+    try {
+      if (line != null && changes != null) {
+        line.options = line.options.copyWith(changes);
+        await lineManager?.set(line);
+        notifyListeners();
+      }
+    } catch (e) {}
   }
 
   /// Retrieves the current position of the line.
   /// This may be different from the value of `line.options.geometry` if the line is draggable.
   /// In that case this method provides the line's actual position, and `line.options.geometry` the last programmatically set position.
-  Future<List<LatLng>> getLineLatLngs(Line line) async {
-    return line.options.geometry!;
+  Future<List<LatLng>?> getLineLatLngs(Line line) async {
+    return line.options.geometry;
   }
 
   /// Removes the specified [line] from the map. The line must be a current
@@ -941,8 +958,10 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> removeLine(Line line) async {
-    await lineManager?.remove(line);
-    notifyListeners();
+    try {
+      await lineManager?.remove(line);
+      notifyListeners();
+    } catch (e) {}
   }
 
   /// Removes the specified [lines] from the map. The lines must be current
@@ -953,8 +972,10 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> removeLines(Iterable<Line> lines) async {
-    await lineManager?.removeAll(lines);
-    notifyListeners();
+    try {
+      await lineManager?.removeAll(lines);
+      notifyListeners();
+    } catch (e) {}
   }
 
   /// Removes all [lines] from the map.
@@ -964,8 +985,10 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> clearLines() async {
-    await lineManager?.clear();
-    notifyListeners();
+    try {
+      await lineManager?.clear();
+      notifyListeners();
+    } catch (e) {}
   }
 
   /// Adds a circle to the map, configured using the specified custom [options].
@@ -975,13 +998,21 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes with the added circle once listeners have
   /// been notified.
-  Future<Circle> addCircle(CircleOptions options, [Map? data]) async {
-    final CircleOptions effectiveOptions =
-        CircleOptions.defaultOptions.copyWith(options);
-    final circle = Circle(getRandomString(), effectiveOptions, data);
-    await circleManager!.add(circle);
-    notifyListeners();
-    return circle;
+  Future<Circle?> addCircle(CircleOptions? options, [Map? data]) async {
+    try {
+      if (options != null) {
+        final CircleOptions effectiveOptions =
+            CircleOptions.defaultOptions.copyWith(options);
+        final circle = Circle(getRandomString(), effectiveOptions, data);
+        await circleManager?.add(circle);
+        notifyListeners();
+        return circle;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Adds multiple circles to the map, configured using the specified custom
@@ -992,17 +1023,24 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes with the added circle once listeners have
   /// been notified.
-  Future<List<Circle>> addCircles(List<CircleOptions> options,
+  Future<List<Circle>?> addCircles(List<CircleOptions>? options,
       [List<Map>? data]) async {
-    final cricles = [
-      for (var i = 0; i < options.length; i++)
-        Circle(getRandomString(),
-            CircleOptions.defaultOptions.copyWith(options[i]), data?[i])
-    ];
-    await circleManager!.addAll(cricles);
-
-    notifyListeners();
-    return cricles;
+    try {
+      if (options != null && options.isNotEmpty) {
+        final cricles = [
+          for (var i = 0; i < options.length; i++)
+            Circle(getRandomString(),
+                CircleOptions.defaultOptions.copyWith(options[i]), data?[i])
+        ];
+        await circleManager?.addAll(cricles);
+        notifyListeners();
+        return cricles;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Updates the specified [circle] with the given [changes]. The circle must
@@ -1019,14 +1057,14 @@ class MapboxMapController extends ChangeNotifier {
         await circleManager?.set(circle);
         notifyListeners();
       }
-    } catch(e) {}
+    } catch (e) {}
   }
 
   /// Retrieves the current position of the circle.
   /// This may be different from the value of `circle.options.geometry` if the circle is draggable.
   /// In that case this method provides the circle's actual position, and `circle.options.geometry` the last programmatically set position.
-  Future<LatLng> getCircleLatLng(Circle circle) async {
-    return circle.options.geometry!;
+  Future<LatLng?> getCircleLatLng(Circle circle) async {
+    return circle.options.geometry;
   }
 
   /// Removes the specified [circle] from the map. The circle must be a current
@@ -1040,9 +1078,7 @@ class MapboxMapController extends ChangeNotifier {
     try {
       circleManager?.remove(circle);
       notifyListeners();
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   /// Removes the specified [circles] from the map. The circles must be current
@@ -1056,7 +1092,7 @@ class MapboxMapController extends ChangeNotifier {
     try {
       await circleManager?.removeAll(circles);
       notifyListeners();
-    } catch(e) {}
+    } catch (e) {}
   }
 
   /// Removes all [circles] from the map.
@@ -1069,7 +1105,7 @@ class MapboxMapController extends ChangeNotifier {
     try {
       circleManager?.clear();
       notifyListeners();
-    } catch(e) {}
+    } catch (e) {}
   }
 
   /// Adds a fill to the map, configured using the specified custom [options].
@@ -1123,7 +1159,7 @@ class MapboxMapController extends ChangeNotifier {
         await fillManager?.set(fill);
         notifyListeners();
       }
-    } catch(e) {}
+    } catch (e) {}
   }
 
   /// Removes all [fill] from the map.
@@ -1136,7 +1172,7 @@ class MapboxMapController extends ChangeNotifier {
     try {
       await fillManager?.clear();
       notifyListeners();
-    } catch(e) {}
+    } catch (e) {}
   }
 
   /// Removes the specified [fill] from the map. The fill must be a current
@@ -1150,7 +1186,7 @@ class MapboxMapController extends ChangeNotifier {
     try {
       await fillManager?.remove(fill);
       notifyListeners();
-    } catch(e) {}
+    } catch (e) {}
   }
 
   /// Removes the specified [fills] from the map. The fills must be current
@@ -1164,7 +1200,7 @@ class MapboxMapController extends ChangeNotifier {
     try {
       await fillManager?.removeAll(fills);
       notifyListeners();
-    } catch(e) {}
+    } catch (e) {}
   }
 
   /// Query rendered features at a point in screen cooridnates
