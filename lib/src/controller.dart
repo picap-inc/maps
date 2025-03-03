@@ -815,7 +815,7 @@ class MapboxMapController extends ChangeNotifier {
         Symbol(getRandomString(),
             SymbolOptions.defaultOptions.copyWith(options[i]), data?[i])
     ];
-    await symbolManager!.addAll(symbols);
+    await symbolManager?.addAll(symbols);
 
     notifyListeners();
     return symbols;
@@ -829,8 +829,7 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> updateSymbol(Symbol symbol, SymbolOptions changes) async {
-    await symbolManager!
-        .set(symbol..options = symbol.options.copyWith(changes));
+    await symbolManager?.set(symbol..options = symbol.options.copyWith(changes));
 
     notifyListeners();
   }
@@ -850,7 +849,7 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> removeSymbol(Symbol symbol) async {
-    await symbolManager!.remove(symbol);
+    await symbolManager?.remove(symbol);
     notifyListeners();
   }
 
@@ -873,7 +872,7 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> clearSymbols() async {
-    symbolManager!.clear();
+    symbolManager?.clear();
     notifyListeners();
   }
 
