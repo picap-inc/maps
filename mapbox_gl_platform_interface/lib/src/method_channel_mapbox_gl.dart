@@ -213,6 +213,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       );
       return CameraPosition.fromMap(json);
     } on PlatformException catch (e) {
+      debugPrint(e.toString());
       return null;
     }
   }
@@ -225,6 +226,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'duration': duration?.inMilliseconds,
       });
     } on PlatformException catch (e) {
+      debugPrint(e.toString());
       return false;
     }
   }
@@ -236,6 +238,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'cameraUpdate': cameraUpdate.toJson(),
       });
     } on PlatformException catch (e) {
+      debugPrint(e.toString());
       return false;
     }
   }
@@ -249,7 +252,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'mode': myLocationTrackingMode.index,
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -271,7 +274,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'animated': animated,
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -309,7 +312,8 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       );
       return reply['features'].map((feature) => jsonDecode(feature)).toList();
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
+      return [];
     }
   }
 
@@ -335,7 +339,8 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       );
       return reply['features'].map((feature) => jsonDecode(feature)).toList();
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
+      return [];
     }
   }
 
@@ -345,7 +350,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       await _channel.invokeMethod('map#invalidateAmbientCache');
       return null;
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -363,7 +368,8 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       }
       return LatLng(latitude, longitude);
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
+      return LatLng(0, 0);
     }
   }
 
@@ -379,7 +385,8 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         northeast: LatLng(northeast[0], northeast[1]),
       );
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
+      return LatLngBounds(southwest: LatLng(0, 0), northeast: LatLng(0, 0));
     }
   }
 
@@ -394,7 +401,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'sdf': sdf
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -410,7 +417,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'coordinates': coordinates.toList()
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -426,7 +433,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'coordinates': coordinates?.toList()
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -440,7 +447,8 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       });
       return Point(screenPosMap['x'], screenPosMap['y']);
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
+      return Point(0, 0);
     }
   }
 
@@ -461,7 +469,8 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
 
       return points;
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
+      return [];
     }
   }
 
@@ -473,7 +482,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         <String, Object>{'sourceId': sourceId},
       );
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -488,7 +497,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'maxzoom': maxzoom
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -505,7 +514,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'maxzoom': maxzoom
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -515,7 +524,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       return await _channel.invokeMethod(
           'style#removeLayer', <String, Object>{'layerId': layerId});
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -525,7 +534,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       return await _channel.invokeMethod('style#setFilter',
           <String, Object>{'layerId': layerId, 'filter': jsonEncode(filter)});
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -535,7 +544,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       return await _channel.invokeMethod('style#setVisibility',
           <String, Object>{'layerId': layerId, 'isVisible': isVisible});
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -549,7 +558,8 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       });
       return LatLng(latLngMap['latitude'], latLngMap['longitude']);
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
+      return LatLng(0, 0);
     }
   }
 
@@ -562,7 +572,8 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
       });
       return latLngMap['metersperpixel'];
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
+      return 0.0;
     }
   }
 
@@ -575,7 +586,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'geojson': jsonEncode(geojson),
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -588,7 +599,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'geojson': jsonEncode(geojson),
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -615,7 +626,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
             (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -630,7 +641,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
             (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -645,7 +656,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
             (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -660,7 +671,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
             (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -687,7 +698,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
             (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -714,7 +725,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
             (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -741,7 +752,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
             (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -768,7 +779,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
             (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -786,7 +797,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'properties': properties.toJson(),
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -808,7 +819,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
             (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -830,7 +841,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
             (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -852,7 +863,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
             (key, value) => MapEntry<String, String>(key, jsonEncode(value)))
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -864,7 +875,7 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
         'geojsonFeature': jsonEncode(geojsonFeature)
       });
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -882,7 +893,8 @@ class MethodChannelMapboxGl extends MapboxGlPlatform {
           'snapshot#takeSnapshot', snapshotOptions.toJson());
       return uri;
     } on PlatformException catch (e) {
-      return new Future.error(e);
+      debugPrint(e.toString());
+      return '';
     }
   }
 }
