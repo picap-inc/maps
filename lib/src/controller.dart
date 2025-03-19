@@ -255,9 +255,11 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes after listeners have been notified.
   Future<void> _updateMapOptions(Map<String, dynamic> optionsUpdate) async {
-    _disposeGuard();
-    _cameraPosition = await _mapboxGlPlatform.updateMapOptions(optionsUpdate);
-    notifyListeners();
+    try {
+      _disposeGuard();
+      _cameraPosition = await _mapboxGlPlatform.updateMapOptions(optionsUpdate);
+      notifyListeners();
+    } catch (e) {}
   }
 
   /// Triggers a resize event for the map on web (ignored on Android or iOS).
@@ -267,14 +269,18 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// To force resize map (without any checks) have a look at forceResizeWebMap()
   void resizeWebMap() {
-    _disposeGuard();
-    _mapboxGlPlatform.resizeWebMap();
+    try {
+      _disposeGuard();
+      _mapboxGlPlatform.resizeWebMap();
+    } catch (e) {}
   }
 
   /// Triggers a hard map resize event on web and does not check if it is required or not.
   void forceResizeWebMap() {
-    _disposeGuard();
-    _mapboxGlPlatform.forceResizeWebMap();
+    try {
+      _disposeGuard();
+      _mapboxGlPlatform.forceResizeWebMap();
+    } catch (e) {}
   }
 
   void _disposeGuard() {
@@ -763,8 +769,10 @@ class MapboxMapController extends ChangeNotifier {
   /// The returned [Future] completes after the change has been made on the
   /// platform side.
   Future<void> setMapLanguage(String language) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.setMapLanguage(language);
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.setMapLanguage(language);
+    } catch (e) {}
   }
 
   /// Enables or disables the collection of anonymized telemetry data.
@@ -772,8 +780,10 @@ class MapboxMapController extends ChangeNotifier {
   /// The returned [Future] completes after the change has been made on the
   /// platform side.
   Future<void> setTelemetryEnabled(bool enabled) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.setTelemetryEnabled(enabled);
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.setTelemetryEnabled(enabled);
+    } catch (e) {}
   }
 
   /// Retrieves whether collection of anonymized telemetry data is enabled.
@@ -781,8 +791,12 @@ class MapboxMapController extends ChangeNotifier {
   /// The returned [Future] completes after the query has been made on the
   /// platform side.
   Future<bool> getTelemetryEnabled() async {
-    _disposeGuard();
-    return _mapboxGlPlatform.getTelemetryEnabled();
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.getTelemetryEnabled();
+    } catch (e) {
+      return false;
+    }
   }
 
   /// Adds a symbol to the map, configured using the specified custom [options].
@@ -1206,35 +1220,53 @@ class MapboxMapController extends ChangeNotifier {
   /// Query rendered features at a point in screen cooridnates
   Future<List> queryRenderedFeatures(
       Point<double> point, List<String> layerIds, List<Object>? filter) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.queryRenderedFeatures(point, layerIds, filter);
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.queryRenderedFeatures(point, layerIds, filter);
+    } catch (e) {
+      return [];
+    }
   }
 
   /// Query rendered features in a Rect in screen coordinates
   Future<List> queryRenderedFeaturesInRect(
       Rect rect, List<String> layerIds, String? filter) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.queryRenderedFeaturesInRect(
-        rect, layerIds, filter);
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.queryRenderedFeaturesInRect(
+          rect, layerIds, filter);
+    } catch (e) {
+      return [];
+    }
   }
 
   Future invalidateAmbientCache() async {
-    _disposeGuard();
-    return _mapboxGlPlatform.invalidateAmbientCache();
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.invalidateAmbientCache();
+    } catch (e) {}
   }
 
   /// Get last my location
   ///
   /// Return last latlng, nullable
   Future<LatLng?> requestMyLocationLatLng() async {
-    _disposeGuard();
-    return _mapboxGlPlatform.requestMyLocationLatLng();
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.requestMyLocationLatLng();
+    } catch (e) {
+      return null;
+    }
   }
 
   /// This method returns the boundaries of the region currently displayed in the map.
-  Future<LatLngBounds> getVisibleRegion() async {
-    _disposeGuard();
-    return _mapboxGlPlatform.getVisibleRegion();
+  Future<LatLngBounds?> getVisibleRegion() async {
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.getVisibleRegion();
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Adds an image to the style currently displayed in the map, so that it can later be referred to by the provided name.
@@ -1396,27 +1428,43 @@ class MapboxMapController extends ChangeNotifier {
   /// You therefore might want to round them appropriately, depending on your use case.
   ///
   /// Returns null if [latLng] is not currently visible on the map.
-  Future<Point> toScreenLocation(LatLng latLng) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.toScreenLocation(latLng);
+  Future<Point?> toScreenLocation(LatLng latLng) async {
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.toScreenLocation(latLng);
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<List<Point>> toScreenLocationBatch(Iterable<LatLng> latLngs) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.toScreenLocationBatch(latLngs);
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.toScreenLocationBatch(latLngs);
+    } catch (e) {
+      return [];
+    }
   }
 
   /// Returns the geographic location (as [LatLng]) that corresponds to a point on the screen. The screen location is specified in screen pixels (not display pixels) relative to the top left of the map (not the top left of the whole screen).
-  Future<LatLng> toLatLng(Point screenLocation) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.toLatLng(screenLocation);
+  Future<LatLng?> toLatLng(Point screenLocation) async {
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.toLatLng(screenLocation);
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Returns the distance spanned by one pixel at the specified [latitude] and current zoom level.
   /// The distance between pixels decreases as the latitude approaches the poles. This relationship parallels the relationship between longitudinal coordinates at different latitudes.
   Future<double> getMetersPerPixelAtLatitude(double latitude) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.getMetersPerPixelAtLatitude(latitude);
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.getMetersPerPixelAtLatitude(latitude);
+    } catch (e) {
+      return 0;
+    }
   }
 
   /// Add a new source to the map
@@ -1529,9 +1577,13 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// Default will return snapshot uri in Android and iOS
   /// If you want base64 value, you must set writeToDisk option to False
-  Future<String> takeSnapshot(SnapshotOptions snapshotOptions) async {
-    _disposeGuard();
-    return _mapboxGlPlatform.takeSnapshot(snapshotOptions);
+  Future<String?> takeSnapshot(SnapshotOptions snapshotOptions) async {
+    try {
+      _disposeGuard();
+      return _mapboxGlPlatform.takeSnapshot(snapshotOptions);
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
