@@ -430,20 +430,26 @@ class MapboxMapController extends ChangeNotifier {
 
   Future<void> setLineLayerProperties(
       String layerId, LineLayerProperties properties) async {
-    await _mapboxGlPlatform.setLineLayerProperties(
-        layerId, properties.toJson());
+    try {
+      await _mapboxGlPlatform.setLineLayerProperties(
+          layerId, properties.toJson());
+    } catch (e) {}
   }
 
   Future<void> setSymbolLayerProperties(
       String layerId, SymbolLayerProperties properties) async {
-    await _mapboxGlPlatform.setSymbolLayerProperties(
-        layerId, properties.toJson());
+    try {
+      await _mapboxGlPlatform.setSymbolLayerProperties(
+          layerId, properties.toJson());
+    } catch (e) {}
   }
 
   Future<void> setCircleLayerProperties(
       String layerId, CircleLayerProperties properties) async {
-    await _mapboxGlPlatform.setCircleLayerProperties(
-        layerId, properties.toJson());
+    try {
+      await _mapboxGlPlatform.setCircleLayerProperties(
+          layerId, properties.toJson());
+    } catch (e) {}
   }
 
   /// Add a line layer to the map with the given properties
