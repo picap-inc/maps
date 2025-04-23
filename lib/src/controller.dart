@@ -849,10 +849,11 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> updateSymbol(Symbol symbol, SymbolOptions changes) async {
-    await symbolManager
-        ?.set(symbol..options = symbol.options.copyWith(changes));
-
-    notifyListeners();
+    try {
+      await symbolManager
+          ?.set(symbol..options = symbol.options.copyWith(changes));
+      notifyListeners();
+    } catch (e) {}
   }
 
   /// Retrieves the current position of the symbol.
@@ -870,8 +871,10 @@ class MapboxMapController extends ChangeNotifier {
   ///
   /// The returned [Future] completes once listeners have been notified.
   Future<void> removeSymbol(Symbol symbol) async {
-    await symbolManager?.remove(symbol);
-    notifyListeners();
+    try {
+      await symbolManager?.remove(symbol);
+      notifyListeners();
+    } catch (e) {}
   }
 
   /// Removes the specified [symbols] from the map. The symbols must be current
