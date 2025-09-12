@@ -7,6 +7,7 @@ import static com.mapbox.mapboxgl.Convert.toMap;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.PropertyValue;
@@ -297,7 +298,11 @@ class LayerPropertyConverter {
           properties.add(PropertyFactory.lineDasharray(expression));
           break;
         case "line-pattern":
-          properties.add(PropertyFactory.linePattern(expression));
+          if (jsonElement instanceof JsonPrimitive && ((JsonPrimitive) jsonElement).isString()) {
+              properties.add(PropertyFactory.linePattern(jsonElement.getAsString()));
+          } else {
+            properties.add(PropertyFactory.linePattern(expression));
+          }
           break;
         case "line-gradient":
           properties.add(PropertyFactory.lineGradient(expression));
